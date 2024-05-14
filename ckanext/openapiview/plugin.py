@@ -35,7 +35,7 @@ class OpenAPIViewPlugin(p.SingletonPlugin):
     def can_view(self, data_dict):
         resource = data_dict['resource']
         format_lower = resource.get('format', '').lower()
-        return format_lower == 'json'
+        return format_lower == 'openapi-json'
 
     def view_template(self, context, data_dict):
         return 'openapiview/openapi_view.html'

@@ -4,7 +4,7 @@
 
 {% block page %}
   <div id="swagger-ui">
-    <pre data-module="openapi_view" data-module-url="{{ resource }}">
+    <pre data-module="openapi_view" data-module-url="{{ h.openapiview_resource_openapi_url(resource) }}">
       <div class="loading">
         {{ _('Loading...') }}
       </div>

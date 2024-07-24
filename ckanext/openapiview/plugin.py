@@ -10,6 +10,9 @@ import ckan.lib.datapreview as datapreview
 
 log = logging.getLogger(__name__)
 
+def resource_openapi_url(resource):
+    if resource.get('format', '').lower() == 'openapi-json':
+        return resource['url']
 
 class OpenAPIViewPlugin(p.SingletonPlugin):
     '''This extension previews JSON(P).'''
@@ -17,6 +20,7 @@ class OpenAPIViewPlugin(p.SingletonPlugin):
     p.implements(p.IConfigurer, inherit=True)
     p.implements(p.IConfigurable, inherit=True)
     p.implements(p.IResourceView, inherit=True)
+    p.implements(p.ITemplateHelpers)
 
 
     def update_config(self, config):
@@ -24,6 +28,11 @@ class OpenAPIViewPlugin(p.SingletonPlugin):
             p.toolkit.add_template_directory(config, '2.8_templates')
         p.toolkit.add_template_directory(config, 'templates')
         p.toolkit.add_resource('assets', 'ckanext-openapiview')
+
+    def get_helpers(self):
+        return {
+            'openapiview_resource_openapi_url': resource_openapi_url
+        }
 
     def info(self):
         return {'name': 'openapi_view',
@@ -33,9 +42,7 @@ class OpenAPIViewPlugin(p.SingletonPlugin):
                 }
 
     def can_view(self, data_dict):
-        resource = data_dict['resource']
-        format_lower = resource.get('format', '').lower()
-        return format_lower == 'openapi-json'
+        return resource_openapi_url(data_dict['resource']) is not None
 
     def view_template(self, context, data_dict):
         return 'openapiview/openapi_view.html'

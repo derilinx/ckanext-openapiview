@@ -11,6 +11,10 @@ import ckan.lib.datapreview as datapreview
 log = logging.getLogger(__name__)
 
 def resource_openapi_url(resource):
+    url = resource.get('openapi_spec')
+    if url:
+        return url
+
     if resource.get('format', '').lower() == 'openapi-json':
         return resource['url']
 

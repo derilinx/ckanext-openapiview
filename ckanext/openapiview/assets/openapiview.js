@@ -12,7 +12,7 @@ ckan.module('openapi_view', function (jQuery) {
     },
     initialize: function () {
       const ui = SwaggerUIBundle({
-          url: resource_url,
+          url: this.options.url,
           dom_id: '#swagger-ui',
           deepLinking: true,
           presets: [
